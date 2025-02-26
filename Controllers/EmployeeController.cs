@@ -15,7 +15,7 @@ namespace TodoApi.Controllers
     {
         private readonly EmployeeContext _context;
 
-        public EmployeeController(EmployeeContext context)
+        public EmployeeController(EmployeeContext context) //Dependency injection using constructor
         {
             _context = context;
         }
@@ -73,10 +73,13 @@ namespace TodoApi.Controllers
         }
 
         // POST: api/TodoItems
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Employee>> PostEmployee(Employee employee)
         {
+            if (!ModelState.IsValid) // Check for validation errors
+            {
+                return BadRequest(ModelState); // Return 400 with errors
+            }
             _context.Employees.Add(employee);
             await _context.SaveChangesAsync();
 
